@@ -30,3 +30,19 @@ cd models
 python main.py --img_path ../demo --model_path path/to/model
 ```
 
+## Cite as
+```
+@article{zeng2024meacap,
+  title={MeaCap: Memory-Augmented Zero-shot Image Captioning},
+  author={Zeng, Zequn and Xie, Yan and Zhang, Hao and Chen, Chiyu and Wang, Zhengjue and Chen, Bo},
+  journal={arXiv preprint arXiv:2403.03715},
+  year={2024}
+}
+```
+
+## Acknowledgement
+
+This code is heavily depend on [ConZIC](https://github.com/joeyz0z/ConZIC) and [CBART](https://github.com/NLPCode/CBART).
+
+Thanks for their good work.
+
