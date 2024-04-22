@@ -16,7 +16,7 @@
 ![Local Image](./git_images/model.png)
 
 ## Demo
-Download memory files to ./data/: [Memory](https://drive.google.com/file/d/1iN886emz_9Sa31gLyL5LbdCFE98rLU4-/view?usp=drive_link)
+Download memory files to ./data/: [Memory](https://drive.google.com/file/d/1iN886emz_9Sa31gLyL5LbdCFE98rLU4-/view?usp=sharing)
 
 Download Model weight to ./checkpoints/: [Model](https://drive.google.com/file/d/1qEAi7yFqaiZ-Ufa3GeoHEA9e4A8LrNN0/view?usp=drive_link)
 
