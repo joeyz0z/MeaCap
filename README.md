@@ -38,9 +38,9 @@ official implementation of MeaCap.
     * <a href='#memory'>Memory bank</a>
     * <a href='#model'>Model Zoo</a>
 * <a href='#inference'>Inference</a>
-    * <a href='#tf'>Training free</a>
-    * <a href='#tot'>Text-only training</a> 
-    * <a href='#other'>Memory concepts + ViECAP</a>
+    * <a href='#tf'>${MeaCap}_{TF}$: Training free</a>
+    * <a href='#tot'>${MeaCap}_{ToT}$: Text-only training</a> 
+    * <a href='#other'>${MeaCap}_{InvLM}$: Memory concepts + ViECAP</a>
 * <a href='#experiments'>Experiments</a>
 * <a href='#acknowledgments'>Acknowledgments</a>
 
@@ -151,7 +151,7 @@ python inference.py --use_prompt True --prompt_ensembling False --memory_id cc3m
 
 <span id = 'tot'/>
 
-### Text-only-training
+### ${MeaCap}_{ToT}$: Text-only-training
 For text-only-training version ${MeaCap}_{ToT}$, we use finetuned CBART where prompts are needless.
 ```
 python inference.py --use_prompt False --memory_id coco --img_path ./image_example --lm_model_path ./checkpoints/CBART_COCO 
@@ -159,7 +159,7 @@ python inference.py --use_prompt False --memory_id coco --img_path ./image_examp
 
 <span id = 'other '/>
 
-### Memory concepts + ViECAP
+### ${MeaCap}_{InvLM}$: Memory concepts + ViECAP
 We also supporting add memory concepts to strong baseline [ViECAP](https://github.com/FeiElysia/ViECap) in a plug-and-play way, namely ${MeaCap}_{InvLM}$.
 We simply need to replace the entity module by our proposed retrieve-then-filter module in the inference stage and then the performance can be improved. Details are shown in Appendix of our paper.
 ```
