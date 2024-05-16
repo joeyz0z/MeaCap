@@ -172,7 +172,7 @@ python viecap_inference.py --memory_id coco --image_path "*.jpg" --weight_path "
 ### Zero-shot captioning
 <div align = center>
 
-| Methods     |Training| Memory | MSCOCO | NoCaps val (CIDEr)       |
+| Methods     |Training| Memory | MSCOCO test | NoCaps val (CIDEr)       |
 |-------------|--------|--------|--------|--------------------------|
 |             |        |        | CIDEr  | In / Near / Out / Overall   |
 | ConZIC      |✗       | ✗      | 5.0    | 15.4 / 16.0 / 20.3 / 17.5      |
@@ -188,7 +188,7 @@ python viecap_inference.py --memory_id coco --image_path "*.jpg" --weight_path "
 ### In/Cross-domain captioning
 <div align = center>
 
-Task              | COCO| Flickr30k | COCO $\Rightarrow$ Flickr30k| Flickr30k $\Rightarrow$ COCO |
+Task              | MSCOCO| Flickr30k | MSCOCO $\Rightarrow$ Flickr30k| Flickr30k $\Rightarrow$ MSCOCO |
 ------------------|-----|-----|-----|-----|
 Metric            |CIDEr|CIDEr|CIDEr|CIDEr|
 MAGIC             |49.3 |20.4 |17.5 | 18.3|
