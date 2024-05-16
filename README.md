@@ -40,7 +40,7 @@ official implementation of MeaCap.
 * <a href='#inference'>Inference</a>
     * <a href='#tf'>Training free</a>
     * <a href='#tot'>Text-only training</a> 
-    * <a href='#other'>Memory concepts + other baseline</a>
+    * <a href='#other'>Memory concepts + ViECAP</a>
 * <a href='#experiments'>Experiments</a>
 * <a href='#acknowledgments'>Acknowledgments</a>
 
