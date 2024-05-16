@@ -134,7 +134,7 @@ Please download these weights and put them into ./checkpoints/ .
 | CBART-large             |Flickr30K        | [link](https://huggingface.co/JoeyZoZ/MeaCap)       | keyword-to-sentence LM for MeaCap$_{\mathrm{ToT}}$|
 | ViECAP                  |COCO/Flickr30k   | [link](https://github.com/FeiElysia/ViECap/releases/download/checkpoints/checkpoints.zip)       | baseline of MeaCap$_{InvLM}$|
 
-If you want to finetune CBART on your own caption corpus, please follow the official training instruction from [CBART](https://github.com/NLPCode/CBART?tab=readme-ov-file),$MeaCap_{InvLM}$.
+If you want to finetune CBART on your own caption corpus, please follow the official training instruction from [CBART](https://github.com/NLPCode/CBART?tab=readme-ov-file), $M_I$.
 
 <span id = 'inference'/>
 
@@ -195,7 +195,7 @@ MAGIC             |49.3 |20.4 |17.5 | 18.3|
 CLIPRe            |53.4 |31.7 |30.1 | 26.5|
 MeaCap$_{\mathrm{TF}}$    |56.9 |36.5 |34.4 | 46.4|
 MeaCap$_{\mathrm{ToT}}$    |84.8 |50.2 |40.3 | 51.7|
-------------------|-----|-----|-----|-----|
+$~~~~$|$~~~~$|$~~~~$|$~~~~$|$~~~~$|
 DeCap             |91.2 |56.7 |35.7 | 44.4|
 CapDec            |91.8 |39.1 |35.7 | 27.3|
 ViECap            |92.9 |47.9 |38.4 | 54.2|
