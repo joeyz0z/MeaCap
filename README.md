@@ -178,10 +178,10 @@ python viecap_inference.py --memory_id coco --image_path "*.jpg" --weight_path "
 | ConZIC      |✗       | ✗      | 5.0    | 15.4 / 16.0 / 20.3 / 17.5      |
 | CLIPRe      |✗       | CC3M   | 25.6   | 23.3 / 26.8 / 36.5 / 28.2      |
 | ${MeaCap}_{TF}$ |✗       | CC3M   | 42.5   | 35.3 / 39.0 / 45.1 / 40.2     |
+| ${MeaCap}_{TF}$ |✗       | SS1M   | 51.7   | 42.0 / 42.8 / 45.4 / 43.8     |
 | DeCap       |CC3M    | CC3M   | 42.1   | 34.8 / 37.7 / 49.9 / 39.7      |
 | ${MeaCap}_{ToT}$|CC3M    | CC3M   | 48.3   | 38.5 / 43.6 / **50.0** / 45.1      |
 | DeCap       |SS1M    | SS1M   | 50.6   | 41.9 / 41.7 / 46.2 / 42.7      |
-| ${MeaCap}_{TF}$ |✗       | SS1M   | 51.7   | 42.0 / 42.8 / 45.4 / 43.8     |
 | ${MeaCap}_{ToT}$|SS1M    | SS1M   | 54.9   | **44.1** / **46.0** /49.7 / **47.3**      |
 </div>
 
