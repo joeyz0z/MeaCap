@@ -182,7 +182,7 @@ python viecap_inference.py --memory_id coco --image_path "*.jpg" --weight_path "
 | DeCap       |CC3M    | CC3M   | 42.1   | 34.8 / 37.7 / 49.9 / 39.7      |
 | ${MeaCap}_{ToT}$|CC3M    | CC3M   | 48.3   | 38.5 / 43.6 / **50.0** / 45.1      |
 | DeCap       |SS1M    | SS1M   | 50.6   | 41.9 / 41.7 / 46.2 / 42.7      |
-| ${MeaCap}_{ToT}$|SS1M    | SS1M   | 54.9   | **44.1** / **46.0** /49.7 / **47.3**      |
+| ${MeaCap}_{ToT}$|SS1M    | SS1M   | **54.9**   | **44.1** / **46.0** /49.7 / **47.3**      |
 </div>
 
 ### In/Cross-domain captioning
@@ -194,7 +194,7 @@ Metric            |CIDEr|CIDEr|CIDEr|CIDEr|
 MAGIC             |49.3 |20.4 |17.5 | 18.3|
 CLIPRe            |53.4 |31.7 |30.1 | 26.5|
 ${MeaCap}_{TF}$    |56.9 |36.5 |34.4 | 46.4|
-${MeaCap}_{ToT}$    |84.8 |50.2 |40.3 | 51.7|
+${MeaCap}_{ToT}$    |**84.8** |**50.2** |**40.3** | **51.7**|
 $~~~~$|$~~~~$|$~~~~$|$~~~~$|$~~~~$|
 DeCap             |91.2 |56.7 |35.7 | 44.4|
 CapDec            |91.8 |39.1 |35.7 | 27.3|
