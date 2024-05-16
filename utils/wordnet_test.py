@@ -5,13 +5,7 @@ import os
 import sys
 from PIL import Image
 from sentence_transformers import SentenceTransformer
-import json
 
-
-with open('../data/memory/flickr30k/train_captions.json', 'r') as f:
-        flickr30k = json.load(f)
-
-print('test')
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 parent_dir_path = os.path.abspath(os.path.join(dir_path, os.pardir))
@@ -55,21 +49,21 @@ Clip compute
 # print(clip_score)
 # print(clip_ref)
 
-# text = ['Image of person.',
-#         'Image of chef.',
-#         'Image of women.']
+text = ['Image of person.',
+        'Image of chef.',
+        'Image of women.']
 #
 # text_embedding = clip_model.compute_text_representation(text)
 # cos_sim = torch.nn.CosineSimilarity(dim=0, eps=1e-6)
 # sim = cos_sim(text_embedding[0, :], text_embedding[1, :])
 # print(sim)
 
-# model = SentenceTransformer('/media/xieyan/Hard Disk2/pretrain_model/all-Mini-L6-v2')
-# embeddings = model.encode(text, convert_to_tensor=True)
-#
-# cos_sim = torch.nn.CosineSimilarity(dim=1, eps=1e-6)
-# sim = cos_sim(embeddings[0, :], embeddings)
-# print(sim)
+model = SentenceTransformer('/media/xieyan/Hard Disk2/pretrain_model/all-Mini-L6-v2')
+embeddings = model.encode(text, convert_to_tensor=True)
+
+cos_sim = torch.nn.CosineSimilarity(dim=1, eps=1e-6)
+sim = cos_sim(embeddings[0, :], embeddings)
+print(sim)
 
 
 

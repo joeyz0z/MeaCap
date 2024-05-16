@@ -1,4 +1,3 @@
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, AutoModel
 import torch
 import nltk
 from collections import OrderedDict
@@ -35,7 +34,7 @@ def filter_relation(graph_dict,sim_entity_dict ,remove_map, sentences, attribute
         res_dict[node]["count"] = graph_dict[node]["count"]
         res_dict[node]["Relation"] = {}
         for obj in graph_dict[node]["Relation"]:
-            if obj in nodes: #copy
+            if obj in nodes: 
                 if obj in res_dict[node]["Relation"]:
                     res_dict[node]["Relation"][obj] += graph_dict[node]["Relation"][obj]
                 else:
@@ -46,7 +45,7 @@ def filter_relation(graph_dict,sim_entity_dict ,remove_map, sentences, attribute
                 else:
                     res_dict[obj]["rating"] += 1
                 res_dict[node]["rating"] += 2
-            elif obj in list(remove_map.keys()) and remove_map[obj] in nodes: # merge
+            elif obj in list(remove_map.keys()) and remove_map[obj] in nodes: 
                 if remove_map[obj] in res_dict[node]["Relation"]:
                     res_dict[node]["Relation"][remove_map[obj]] += graph_dict[node]["Relation"][obj]
                 else:
@@ -57,11 +56,9 @@ def filter_relation(graph_dict,sim_entity_dict ,remove_map, sentences, attribute
                 else:
                     res_dict[remove_map[obj]]["rating"] += 1
                 res_dict[node]["rating"] += 2
-            else: # pass
+            else: 
                 pass
-        # res_dict[node]["rating"] += len(res_dict[node]["Relation"]) * 5
 
-    # res_dict_sorted = OrderedDict(sorted(res_dict.items(), key=lambda item: item[1]["rating"], reverse=True))
     res_dict_sorted = OrderedDict(sorted(res_dict.items(), key=lambda item: item[1]["relative_pos"]))
     entities = []
     for entity in res_dict_sorted:
@@ -71,13 +68,13 @@ def filter_relation(graph_dict,sim_entity_dict ,remove_map, sentences, attribute
                 entities.append(attribute +' '+ entity)
                 flag = 1
                 break
-        if flag==0:
+        if flag == 0:
             entities.append(entity)
-    # entities = list(res_dict_sorted.keys())
 
     return res_dict_sorted, entities
 
-def filter_relation_new(graph_dict,sim_entity_map, sentences, attribute_thresh=3):
+
+def filter_relation_new(graph_dict, sim_entity_map, sentences, attribute_thresh=3):
     res_dict = {}
     nodes = list(graph_dict.keys())
     for node in nodes:
@@ -95,7 +92,7 @@ def filter_relation_new(graph_dict,sim_entity_map, sentences, attribute_thresh=3
         res_dict[node]["count"] = graph_dict[node]["count"]
         res_dict[node]["Relation"] = {}
         for obj in graph_dict[node]["Relation"]:
-            if obj in nodes: #copy
+            if obj in nodes: 
                 if obj in res_dict[node]["Relation"]:
                     res_dict[node]["Relation"][obj] += graph_dict[node]["Relation"][obj]
                 else:
@@ -106,7 +103,7 @@ def filter_relation_new(graph_dict,sim_entity_map, sentences, attribute_thresh=3
                 else:
                     res_dict[obj]["rating"] += 1
                 res_dict[node]["rating"] += 2
-            elif obj in list(sim_entity_map.keys()) and sim_entity_map[obj] in nodes: # merge
+            elif obj in list(sim_entity_map.keys()) and sim_entity_map[obj] in nodes: 
                 if sim_entity_map[obj] in res_dict[node]["Relation"]:
                     res_dict[node]["Relation"][sim_entity_map[obj]] += graph_dict[node]["Relation"][obj]
                 else:
@@ -117,11 +114,9 @@ def filter_relation_new(graph_dict,sim_entity_map, sentences, attribute_thresh=3
                 else:
                     res_dict[sim_entity_map[obj]]["rating"] += 1
                 res_dict[node]["rating"] += 2
-            else: # pass
+            else: 
                 pass
-        # res_dict[node]["rating"] += len(res_dict[node]["Relation"]) * 5
 
-    # res_dict_sorted = OrderedDict(sorted(res_dict.items(), key=lambda item: item[1]["rating"], reverse=True))
     res_dict_sorted = OrderedDict(sorted(res_dict.items(), key=lambda item: item[1]["relative_pos"]))
     entities = []
     for entity in res_dict_sorted:
@@ -131,13 +126,10 @@ def filter_relation_new(graph_dict,sim_entity_map, sentences, attribute_thresh=3
                 entities.append(attribute +' '+ entity)
                 flag = 1
                 break
-        if flag==0:
+        if flag == 0:
             entities.append(entity)
-    # entities = list(res_dict_sorted.keys())
 
     return res_dict_sorted, entities
-
-
 
 
 def merge_sim_entities(model, entities, count_dict, attribute_dict):
@@ -173,72 +165,9 @@ def merge_sim_entities(model, entities, count_dict, attribute_dict):
 
     return entities, new_count_dict
 
-def merge_graph_dict(model, entities, count_dict, entire_graph_dict, sentences):
-    # compute similarity
-    entity_embeddings = model.encode(entities, convert_to_tensor=True, normalize_embeddings=True)
-    entity_correlation = torch.mm(entity_embeddings, entity_embeddings.T)
-    for idx in range(len(entity_correlation)):
-        entity_correlation[idx, idx] = 0
-    sim_index = torch.where(entity_correlation > 0.5)
-    sim_entity_dict = {}
-    remove_entity_dict = {}
-    remove_list = []
-    for ids, (x, y) in enumerate(zip(sim_index[0], sim_index[1])):
-        if entities[x] in remove_list:
-            if entities[x] not in remove_entity_dict:
-                remove_entity_dict[entities[x]] = [entities[y]]
-            else:
-                remove_entity_dict[entities[x]].append(entities[y])
-        else:
-            if entities[x] not in sim_entity_dict:
-                sim_entity_dict[entities[x]] = [entities[y]]
-            else:
-                sim_entity_dict[entities[x]].append(entities[y])
-            count_dict[entities[x]] = count_dict[entities[x]] + count_dict[entities[y]]
-        if entities[y] not in sim_entity_dict:
-            remove_list.append(entities[y])
-
-        # if entities[y] in attribute_dict:
-        #     if entities[x] in attribute_dict:
-        #         attribute_dict[entities[x]] = attribute_dict[entities[x]] + attribute_dict[entities[y]]
-        #     else:
-        #         attribute_dict[entities[x]] = attribute_dict[entities[y]]
-        merge_sim_node(entire_graph_dict, entities[x], entities[y])
-    new_count_dict = OrderedDict()
-    filterd_graph_dict = {}
-    # update remove_list
-    removed_map = {}
-    remove_list = []
-    for ent in sim_entity_dict:
-        remove_list +=  sim_entity_dict[ent]
-    for remove_wd in remove_list:
-        try:
-            removed_map[remove_wd] = [wd for wd in remove_entity_dict[remove_wd] if wd not in remove_list][0]
-        except:
-            print("remove wrong!")
-
-    for key in list(count_dict.keys()):
-        if key in remove_list or count_dict[key] <= 2:
-            continue
-        new_count_dict[key] = count_dict[key]
-        filterd_graph_dict[key] = entire_graph_dict[key]
-    if filterd_graph_dict: # >1
-        filterd_graph_dict_final, entities = filter_relation(filterd_graph_dict,sim_entity_dict,removed_map, sentences)
-    else:
-        # get the first one
-        filterd_graph_dict_final = {}
-        entities = []
-        # key = next(iter(entire_graph_dict))
-        # filterd_graph_dict_final[key] = entire_graph_dict[key]
-        # entities = [key]
-
-    new_count_dict = OrderedDict(sorted(new_count_dict.items(), key=lambda item: item[1], reverse=True))
-    # entities = list(new_count_dict.keys())
-
-    return entities, new_count_dict, filterd_graph_dict_final
 
 def merge_graph_dict_new(wte_model,vl_model,image_embeds, entities, count_dict, entire_graph_dict, sentences):
-    # compute similarity
+    
     entity_embeddings = wte_model.encode(entities, convert_to_tensor=True, normalize_embeddings=True)
     entity_correlation = torch.mm(entity_embeddings, entity_embeddings.T)
     for idx in range(len(entity_correlation)):
@@ -247,7 +176,7 @@ def merge_graph_dict_new(wte_model,vl_model,image_embeds, entities, count_dict, 
     sim_entity_dict = {}
     remove_entity_dict = {}
     remove_list = []
-    # merge the similar entities
+    
     for ids, (x, y) in enumerate(zip(sim_index[0], sim_index[1])):
         if entities[x] not in sim_entity_dict:
             sim_entity_dict[entities[x]] = [entities[y]]
@@ -259,12 +188,12 @@ def merge_graph_dict_new(wte_model,vl_model,image_embeds, entities, count_dict, 
         sim_entity = sim_entity_dict[entity]
         total_sim_entitys+=sim_entity
         for sim_ent in sim_entity:
-            # total_sim_entitys += sim_entity_dict[entity]
+            
             total_sim_entitys += sim_entity_dict[sim_ent]
         sim_entity_dict_new[entity] = list(set(total_sim_entitys))
 
     sim_entity_map = {}
-    # select the best one
+    
     for entity in list(sim_entity_dict_new.keys()):
         text_lists = [f"An Image of {word}" for word in sim_entity_dict_new[entity]]
         text_embeds = vl_model.compute_text_representation(text_lists)
@@ -276,7 +205,7 @@ def merge_graph_dict_new(wte_model,vl_model,image_embeds, entities, count_dict, 
         merge_sim_node(entire_graph_dict, best_word, entity)
     new_count_dict = OrderedDict()
     filterd_graph_dict = {}
-    # add remove_list
+    
     removed_map = {}
     remove_list = []
     for ent in sim_entity_map:
@@ -293,45 +222,44 @@ def merge_graph_dict_new(wte_model,vl_model,image_embeds, entities, count_dict, 
     else:
         filterd_graph_dict_final = {}
         entities = []
-        # key = next(iter(entire_graph_dict))
-        # filterd_graph_dict_final[key] = entire_graph_dict[key]
-        # entities = [key]
 
     new_count_dict = OrderedDict(sorted(new_count_dict.items(), key=lambda item: item[1], reverse=True))
 
     return entities, new_count_dict, filterd_graph_dict_final
 
+
 def add_node_graph(scene_graph, subject, new_edge):
-    # new_edge: (object, relation) or (attribute)
+    
     if subject not in scene_graph:
         scene_graph[subject] = {
             "Relation":{},
             "Attribute":{},
             "count":1,
         }
-        if len(new_edge)==2: # add relation
+        if len(new_edge)==2: 
             scene_graph[subject]["Relation"][new_edge[0]] = [new_edge[1]]
-        elif len(new_edge)==1: # add attribute
+        elif len(new_edge)==1: 
             scene_graph[subject]["Attribute"][new_edge[0]] = 1
-        elif len(new_edge)==0: # only subject
+        elif len(new_edge)==0: 
             pass
         else:
             raise KeyError(f"{new_edge} is wrong")
 
     else:
-        if len(new_edge)==2: # add relation
+        if len(new_edge)==2: 
             if new_edge[0] not in scene_graph[subject]["Relation"]:
                 scene_graph[subject]["Relation"][new_edge[0]] = [new_edge[1]]
             else:
 
                 scene_graph[subject]["Relation"][new_edge[0]] += [new_edge[1]]
-        elif len(new_edge) == 1:  # add attribute
+        elif len(new_edge) == 1:  
             scene_graph[subject]["Attribute"][new_edge[0]] = 1
-        elif len(new_edge) == 0:  # only subject
+        elif len(new_edge) == 0:  
             pass
         else:
             raise KeyError(f"{new_edge} is wrong")
     return scene_graph
+
 
 def merge_seperate_graph(scene_graph, new_graph):
     for key in list(new_graph.keys()):
@@ -348,7 +276,6 @@ def merge_seperate_graph(scene_graph, new_graph):
     return scene_graph
 
 
-
 def format_scene_graph(graph_str):
     return " ".join([item for item in graph_str.replace('(', ' ( ').replace(')', ' ) ').replace(',', ' , ').split() if item != ''])
 
@@ -363,6 +290,7 @@ def get_seg_list(graphs):
     else:
         raise ValueError('input should be either a string or a list of strings')
     return list(set(seg_list))
+
 
 def get_seg_list_seperate(graphs):
     if isinstance(graphs, str):
@@ -388,7 +316,7 @@ def parse(parser, parser_tokenizer, text_input,
     if isinstance(text_input, str):
         text_input = [text_input]
 
-    # breakpoint()
+    
     text_input = ['Generate Scene Graph: ' + text for text in text_input]
     with torch.no_grad():
         encoded_text = parser_tokenizer(
@@ -411,7 +339,6 @@ def parse(parser, parser_tokenizer, text_input,
             early_stopping=True
         )
 
-        # output to text
         output_text = parser_tokenizer.batch_decode(generated_ids, skip_special_tokens=True,
                                                          clean_up_tokenization_spaces=True)
         output_text = [format_scene_graph(text.replace('Generate Scene Graph:', '').strip()) for text in output_text]
@@ -420,7 +347,7 @@ def parse(parser, parser_tokenizer, text_input,
 
 def get_graph_phrases(graph_str_list, type_dict):
     seg_list = get_seg_list(graph_str_list)
-    #breakpoint()
+    
     new_pairs = []
     for seg in seg_list:
         new_seg = [item.strip() for item in seg.split(',')]
@@ -446,7 +373,7 @@ def get_graph_phrases(graph_str_list, type_dict):
                     new_pairs.append(new_seg[0])
                     type_dict[new_seg[0]] = "object"
                 else:
-                    # new_pairs.append(new_seg[0] + " " + new_seg[1] + " " + new_seg[2])
+                    
                     type_dict[new_seg[0] + " " + new_seg[1] + " " + new_seg[2]] = "fact"
                     new_pairs.append(new_seg[0])
                     type_dict[new_seg[0]] = "object"
@@ -456,7 +383,7 @@ def get_graph_phrases(graph_str_list, type_dict):
                         new_pairs.append(new_seg[2])
                         type_dict[new_seg[2]] = "object"
             elif len(new_seg) > 3:
-                # new_pairs.append(new_seg[0] + " ".join(new_seg[1:-1]) + new_seg[-1])
+                
                 type_dict[new_seg[0] + " ".join(new_seg[1:-1]) + new_seg[-1]] = "fact"
                 new_pairs.append(new_seg[0])
                 type_dict[new_seg[0]] = "object"
@@ -468,14 +395,15 @@ def get_graph_phrases(graph_str_list, type_dict):
 
     return list(set(new_pairs))
 
+
 def get_graph_dict(model, graph_str_list,type_dict, attribute_dict):
     seg_lists = get_seg_list_seperate(graph_str_list)
     count_dict = OrderedDict()
     total_entity_lists = []
     total_graph_dicts = []
-    # process graphs
+    
     for seg_list in seg_lists:
-        #breakpoint()
+        
         entity_list = []
         cur_sg = dict()
         for seg in seg_list:
@@ -488,7 +416,7 @@ def get_graph_dict(model, graph_str_list,type_dict, attribute_dict):
                     continue
 
                 if len(new_seg) == 2:
-                    # entity_list.append(new_seg[1] + " " + new_seg[0])
+                    
                     type_dict[new_seg[1] + " " + new_seg[0]] = "attribute"
                     entity_list.append(new_seg[0])
                     type_dict[new_seg[0]] = "object"
@@ -502,10 +430,10 @@ def get_graph_dict(model, graph_str_list,type_dict, attribute_dict):
                     if new_seg[2] in list(NUMBER_DICT.keys()):
                         new_seg[2] = NUMBER_DICT[new_seg[2]]
                     sentence = new_seg[0] + " " + new_seg[1] + " " + new_seg[2]
-                    # sentence_word = nltk.word_tokenize(sentence)
-                    # pos_type = nltk.pos_tag(sentence_word)
+                    
+                    
                     if new_seg[1] == 'is':
-                        # entity_list.append(new_seg[2] + " " + new_seg[0])
+                        
                         type_dict[new_seg[2] + " " + new_seg[0]] = "attribute"
                         entity_list.append(new_seg[0])
                         type_dict[new_seg[0]] = "object"
@@ -515,7 +443,7 @@ def get_graph_dict(model, graph_str_list,type_dict, attribute_dict):
                             attribute_dict[new_seg[0]].append(new_seg[2])
                         add_node_graph(cur_sg, new_seg[0], [new_seg[2]])
                     else:
-                        # entity_list.append(new_seg[0] + " " + new_seg[1] + " " + new_seg[2])
+                        
                         type_dict[new_seg[0] + " " + new_seg[1] + " " + new_seg[2]] = "fact"
                         entity_list.append(new_seg[0])
                         type_dict[new_seg[0]] = "object"
@@ -527,7 +455,7 @@ def get_graph_dict(model, graph_str_list,type_dict, attribute_dict):
                             add_node_graph(cur_sg, new_seg[0], [new_seg[2],new_seg[1]])
                             add_node_graph(cur_sg, new_seg[2], [])
                 elif len(new_seg) > 3:
-                    # entity_list.append(new_seg[0] + " ".join(new_seg[1:-1]) + new_seg[-1])
+                    
                     type_dict[new_seg[0] + " ".join(new_seg[1:-1]) + new_seg[-1]] = "fact"
                     entity_list.append(new_seg[0])
                     type_dict[new_seg[0]] = "object"
@@ -561,7 +489,7 @@ def get_entitys(graph_str_list,type_dict, attribute_dict):
     count_dict = OrderedDict()
     total_entity_lists = []
     for seg_list in seg_lists:
-        #breakpoint()
+        
         entity_list = []
         for seg in seg_list:
             new_seg = [item.strip() for item in seg.split(',')]
@@ -572,7 +500,7 @@ def get_entitys(graph_str_list,type_dict, attribute_dict):
                     continue
 
                 if len(new_seg) == 2:
-                    # entity_list.append(new_seg[1] + " " + new_seg[0])
+                    
                     type_dict[new_seg[1] + " " + new_seg[0]] = "attribute"
                     entity_list.append(new_seg[0])
                     type_dict[new_seg[0]] = "object"
@@ -585,10 +513,10 @@ def get_entitys(graph_str_list,type_dict, attribute_dict):
                     if new_seg[2] in list(NUMBER_DICT.keys()):
                         new_seg[2] = NUMBER_DICT[new_seg[2]]
                     sentence = new_seg[0] + " " + new_seg[1] + " " + new_seg[2]
-                    # sentence_word = nltk.word_tokenize(sentence)
-                    # pos_type = nltk.pos_tag(sentence_word)
+                    
+                    
                     if new_seg[1] == 'is':
-                        # entity_list.append(new_seg[2] + " " + new_seg[0])
+                        
                         type_dict[new_seg[2] + " " + new_seg[0]] = "attribute"
                         entity_list.append(new_seg[0])
                         type_dict[new_seg[0]] = "object"
@@ -597,7 +525,7 @@ def get_entitys(graph_str_list,type_dict, attribute_dict):
                         else:
                             attribute_dict[new_seg[0]].append(new_seg[2])
                     else:
-                        # entity_list.append(new_seg[0] + " " + new_seg[1] + " " + new_seg[2])
+                        
                         type_dict[new_seg[0] + " " + new_seg[1] + " " + new_seg[2]] = "fact"
                         entity_list.append(new_seg[0])
                         type_dict[new_seg[0]] = "object"
@@ -607,7 +535,7 @@ def get_entitys(graph_str_list,type_dict, attribute_dict):
                             entity_list.append(new_seg[2])
                             type_dict[new_seg[2]] = "object"
                 elif len(new_seg) > 3:
-                    # entity_list.append(new_seg[0] + " ".join(new_seg[1:-1]) + new_seg[-1])
+                    
                     type_dict[new_seg[0] + " ".join(new_seg[1:-1]) + new_seg[-1]] = "fact"
                     entity_list.append(new_seg[0])
                     type_dict[new_seg[0]] = "object"
@@ -629,13 +557,13 @@ def get_entitys(graph_str_list,type_dict, attribute_dict):
 
     return entitys, sorted_count_dict
 
+
 def get_graph_phrases_new(graph_str_list, type_dict, count_dict):
     seg_lists = get_seg_list_seperate(graph_str_list)
 
-
     total_pairs = []
     for seg_list in seg_lists:
-        #breakpoint()
+        
         new_pairs = []
         for seg in seg_list:
             new_seg = [item.strip() for item in seg.split(',')]
@@ -673,7 +601,7 @@ def get_graph_phrases_new(graph_str_list, type_dict, count_dict):
                         else:
                             count_dict[new_seg[0]] += 1
                     else:
-                        # new_pairs.append(new_seg[0] + " " + new_seg[1] + " " + new_seg[2])
+                        
                         type_dict[new_seg[0] + " " + new_seg[1] + " " + new_seg[2]] = "fact"
                         new_pairs.append(new_seg[0])
                         type_dict[new_seg[0]] = "object"
@@ -691,7 +619,7 @@ def get_graph_phrases_new(graph_str_list, type_dict, count_dict):
                             else:
                                 count_dict[new_seg[2]] += 1
                 elif len(new_seg) > 3:
-                    # new_pairs.append(new_seg[0] + " ".join(new_seg[1:-1]) + new_seg[-1])
+                    
                     type_dict[new_seg[0] + " ".join(new_seg[1:-1]) + new_seg[-1]] = "fact"
                     new_pairs.append(new_seg[0])
                     type_dict[new_seg[0]] = "object"
@@ -714,26 +642,3 @@ def get_graph_phrases_new(graph_str_list, type_dict, count_dict):
 
     return list(set(all_pairs))
 
-
-if __name__ == "__main__":
-    device = "cuda"
-    parser_checkpoint = "/media/xieyan/Hard Disk2/pretrain_model/flan-t5-base-VG-factual-sg"
-    parser_tokenizer = AutoTokenizer.from_pretrained(parser_checkpoint)
-    parser = AutoModelForSeq2SeqLM.from_pretrained(parser_checkpoint)
-
-    parser.eval()
-    parser.to(device)
-    scene_graphs = parse(parser, parser_tokenizer,
-                         ["A young girl inhales with the intent of blowing out a candle.",
-            "A young girl is preparing to blow out her candle.",
-            "A kid is to blow out the single candle in a bowl of birthday goodness.",
-            "Girl blowing out the candle on an ice-cream",
-            "A little girl is getting ready to blow out a candle on a small dessert."],
-                                        device=device)
-
-    # scene_graphs = parse(parser, parser_tokenizer,
-    #                      ["People talk to each other."],
-    #                      device=device)
-    type_dict = {}
-    concepts = get_graph_phrases(scene_graphs, type_dict)
-    print(concepts)

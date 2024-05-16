@@ -325,9 +325,8 @@ def generate_step_parallel(
             # step 2: predict encoder_labels for input_ids based on encoder_logits
             indicate_labels, predict_labels_list = get_encoder_labels(encoder_logits, encoder_loss_type, indicate_labels, max_insert_label,
                                                                       threshold=threshold, max_len=max_len, min_len=args.min_len,
-                                                                      use_prompt=args.use_prompt, prompt_len=args.prompt_len,
+                                                                      use_prompt=args.use_prompt,prompt_len=args.prompt_len,
                                                                       device=device)
-
 
             decoder_inputs = [BARTDataset.create_decoder_inputs(encoder_inputs[i].tolist()[:pre_decoder_lengths[i]],
                                                                 predict_labels_list[i].tolist(), mask_token_id) for i in range(bts)]
@@ -712,7 +711,7 @@ def Get_shuffle_score(batch_embeds, masked_sentences, model, match_model, wte_mo
         length = len(encoder_inputs_list)
         batch_size = args.batch_size
 
-        # 生成
+        # generate
         predict_outputs, refinement_steps = generate_function(model, tokenizer, match_model, wte_model, select_memory_wte_embeddings,
                                                               encoder_inputs, indicate_labels,
                                                               args.encoder_loss_type,

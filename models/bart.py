@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-
+# @Time    : 2020/7/24 10:17 AM
+# @Author  : He Xingwei
 """
 this script is used to train the CBART model on the synthetic data.
 CBART consists of an encoder and a decoder.
@@ -16,28 +17,27 @@ import os
 import sys
 from pympler import asizeof
 import argparse
+# sys.path.append('../')
 
+# python 3.8以上不可以使用sys.path.append来添加搜索路径
 dir_path = os.path.dirname(os.path.realpath(__file__))
 parent_dir_path = os.path.abspath(os.path.join(dir_path, os.pardir))
 sys.path.insert(0, parent_dir_path)
 
 from utils.log import Logger
 from src.transformers import BartForTextInfill,BartTokenizer, AdamW, BartConfig
-
-
-def safe_check(a, type='uint8'):
-    d = {'uint8': [0, 255],
-         'uint16': [0, 65535]
+def safe_check(a,type='uint8'):
+    d= { 'uint8': [0,255],
+        'uint16': [0,65535]
          }
     range = d[type]
     for l in a:
         for e in l:
             assert e>=range[0] and e<=range[1]
 
-
 class BARTDataset(Dataset):
     def __init__(self, dataset, mode, tokenizer=None, num_labels=-1, insert_mode=-1, max_sentence_length=40,
-                 encoder_loss_type=0, statistics=False, local_rank=-2, generate_mode=0,
+                 encoder_loss_type=0, statistics = False,local_rank=-2, generate_mode=0,
                  ratio1=0.5, ratio2=0.5):
         self.encoder_loss_type = encoder_loss_type
         assert mode in ["train", "test", 'dev']
@@ -80,17 +80,6 @@ class BARTDataset(Dataset):
                 print(f'Please create the synthetic datafile {data_dict_path} with create_synthetic_data.py.')
 
         self.len = len(self.encoder_inputs)
-        # if isinstance(self.encoder_inputs[0],list):
-        #     print('Convert list to numpy to save RAM memory.')
-        #     for i in range(self.len):
-        #         self.encoder_inputs[i] = np.array(self.encoder_inputs[i], dtype=np.int32)
-        #         self.encoder_labels[i] = np.array(self.encoder_labels[i], dtype=np.int8)
-        #         self.decoder_labels[i] = np.array(self.decoder_labels[i], dtype=np.int32)
-        # else:
-        #     print(self.encoder_inputs[0],type(self.encoder_inputs[0]))
-        #     raise ValueError('Fail to convert data.')
-        # print('RAM memory size: ',asizeof.asizeof(self.encoder_inputs),asizeof.asizeof(self.encoder_labels),
-        #       asizeof.asizeof(self.decoder_labels))
         if statistics and local_rank in [-1, 0]:
             print('Statistics for sentence length:')
             lengths = [len(e) for e in self.decoder_labels]
@@ -104,10 +93,11 @@ class BARTDataset(Dataset):
             for k, v in zip(unique,counts):
                 print(f'Label {k}: {v}')
 
+
     def __getitem__(self, idx):
         return torch.tensor(self.encoder_inputs[idx], dtype=torch.long), \
-               torch.tensor(self.encoder_labels[idx], dtype=torch.long), \
-               torch.tensor(self.decoder_labels[idx], dtype=torch.long)
+               torch.tensor(self.encoder_labels[idx], dtype=torch.long ), \
+               torch.tensor(self.decoder_labels[idx], dtype=torch.long )
 
     def __len__(self):
         return self.len
@@ -272,6 +262,7 @@ class BARTDataset(Dataset):
         model.train()
         return average_encoder_loss, average_decoder_loss, average_masked_decoder_loss, average_loss, \
                used_time, recalls, precisions, f1s
+
 
 
 if __name__ == "__main__":

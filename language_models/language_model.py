@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
+# @Time    : 2020/8/11 3:41 PM
+# @Author  : He Xingwei
 
 import torch
 import time
 from torch.nn.utils.rnn import pad_sequence
-
 
 class LanguageModel(object):
 
@@ -51,14 +52,23 @@ class LanguageModel(object):
         input_ids = _input_ids.to(device)
 
         with torch.no_grad():
+            # s = time.time()
             outputs = language_model(input_ids[:,-1].view(-1,1), past=past)
+            # print('-------')
+            # print( time.time()-s)
+            # print(outputs[0][:,-1,:10])
+            # s = time.time()
+            # outputs = language_model(input_ids, past=None)
+            # print(time.time()-s)
+            #  shape: [1, 1, vocab_size]
             logits, past = outputs[:2]
-            logits = logits[0, -1, :]
+            # print(logits.shape)
+            # print(outputs[0][:,-1,:10])
 
+            logits = logits[0, -1, :]
             # set the probability of stop tokens to 0
             if stop_tokens_tensor is not None:
                 logits = logits.masked_fill(stop_tokens_tensor > 0, -1e10)
-
             # forbid to insert sub tokens behind the lexical constraints
             if sub_tokens_tensor is not None and previous_is_keyword:
                 logits = logits.masked_fill(sub_tokens_tensor > 0, -1e10)
@@ -72,18 +82,22 @@ class LanguageModel(object):
             conditional_probs = torch.softmax(logits, -1)
         return conditional_probs, past
 
-    def conditional_distribution_unidirectional_lm(self, input_ids, previous_is_keyword=False, top_k=-1,
+
+    def conditional_distribution_unidirectional_lm(self, input_ids, previous_is_keyword=False, top_k = -1,
                                                    sub_tokens_tensor=None, stop_tokens_tensor=None, past=None,
                                                    prev_output_tokens = None):
         """
         this function is meant to get the distribution of p(x_n |x<n)
+        :param input_ids:
+        :param top_k:
+        :return:
         """
 
-        conditional_probs, past = self.conditional_distribution(input_ids,
+        conditional_probs, past = self.conditional_distribution( input_ids,
                                                                 previous_is_keyword=previous_is_keyword,
-                                                                sub_tokens_tensor=sub_tokens_tensor,
-                                                                stop_tokens_tensor=stop_tokens_tensor,
-                                                                past=past, prev_output_tokens=prev_output_tokens)
+                                                                sub_tokens_tensor = sub_tokens_tensor,
+                                                                stop_tokens_tensor = stop_tokens_tensor,
+                                                                past=past,prev_output_tokens = prev_output_tokens)
         if top_k != -1:
             # select the top_k probabilities and tokens
             top_k_conditional_probs, top_k_token_ids = torch.topk(conditional_probs, top_k)
@@ -96,8 +110,10 @@ class LanguageModel(object):
 
         return top_k_conditional_probs, top_k_token_ids, conditional_probs, past
 
-    def decode(self, input_ids, hx=None, past=None, previous_is_keyword=False, sub_tokens_tensor=None,
-               stop_tokens_tensor=None, prev_output_tokens=None):
+
+
+    def decode(self, input_ids, hx=None, past=None, previous_is_keyword = False, sub_tokens_tensor=None,
+               stop_tokens_tensor=None, prev_output_tokens = None):
         # sequential decoding from left to right
         if hx is not None:
             past = hx
@@ -114,9 +130,9 @@ class LanguageModel(object):
             if sub_tokens_tensor is not None and previous_is_keyword:
                 logits = logits.masked_fill(sub_tokens_tensor > 0, -1e10)
 
-            if self.repetition_penalty != 1 and prev_output_tokens is not None:
+            if self.repetition_penalty!=1 and prev_output_tokens is not None:
                 prev_output_tokens = prev_output_tokens.to(self.device)
-                logits = logits.reshape(1, 1, -1)
+                logits = logits.reshape(1,1,-1)
                 logits = self.enforce_repetition_penalty_parallel(logits, prev_output_tokens, self.repetition_penalty)
                 logits = logits.reshape(-1)
 

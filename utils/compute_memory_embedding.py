@@ -1,4 +1,4 @@
-import torch
+mport torch
 import os
 import sys
 import tqdm
@@ -11,19 +11,17 @@ sys.path.insert(0, parent_dir_path)
 
 from models.clip_utils import CLIP
 
-clip_path = '/media/xieyan/Hard Disk2/pretrain_model/clip_weights'
-clip_model = CLIP(clip_path)
-clip_model.eval()
-clip_model.to('cuda')
-# wte_path = '/media/xieyan/Hard Disk2/pretrain_model/all-Mini-L6-v2'
-# wte_model = SentenceTransformer(wte_path)
-# wte_model.eval()
-# wte_model.to('cuda')
+# clip_path = '/media/xieyan/Hard Disk2/pretrain_model/clip_weights'
+# clip_model = CLIP(clip_path)
+wte_path = '/media/xieyan/Hard Disk2/pretrain_model/all-Mini-L6-v2'
+wte_model = SentenceTransformer(wte_path)
+wte_model.eval()
+wte_model.to('cuda')
 
-memory_txt = '../data/ss1m/ss1m.txt'
-memory_save_path = '../data/memory/ss1m'
-memory_captions_file = '../data/memory/ss1m/train_captions.json'
-memory_embedding_file = '../data/memory/ss1m/train_embedding.pt'
+memory_txt = '../data/coco/train.txt'
+memory_save_path = '../data/memory/coco'
+memory_captions_file = '../data/memory/coco/train_captions.json'
+memory_embedding_file = '../data/memory/coco/train_embedding.pt'
 
 if not os.path.exists(memory_save_path):
     os.makedirs(memory_save_path)
