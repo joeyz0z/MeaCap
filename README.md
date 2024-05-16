@@ -13,6 +13,7 @@ official implementation of MeaCap.
 [comment]: <> ([![Project Website]&#40;https://img.shields.io/badge/Project-Website-orange&#41;]&#40;https://tuneavideo.github.io/&#41;)
 [![arXiv](https://img.shields.io/badge/arXiv-2403.03715-b31b1b.svg)](https://arxiv.org/abs/2403.03715)
 
+
 [comment]: <> (![Local Image]&#40;assets/model.png&#41;)
 <div align = center>
 <img src="./assets/model.png" />
@@ -126,14 +127,14 @@ Please download these weights and put them into ./checkpoints/ .
 | SceneGraphParser        |✗                | [link](https://huggingface.co/lizhuang144/flan-t5-base-VG-factual-sg)       | Parse caption into scene graph|
 | SentenceBERT            |✗                | [link](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2)       | Sentence similarity computation|
 |(Optional)|$~~~~$ |$~~~~$ |$~~~~$ |
-| CBART-large             |One-billion-word | [link](https://drive.google.com/file/d/13NOAsdSnO-eLIDxdo0M-_sX2KxyrYndX/view?usp=sharing)       | keyword-to-sentence LM for MeaCap$_{\mathrm{TF}} |
-| CBART-large             |CC3M             | [link](https://huggingface.co/JoeyZoZ/MeaCap)       | keyword-to-sentence LM for MeaCap$_{\mathrm{ToT}}|
-| CBART-large             |SS1M             | [link](https://huggingface.co/JoeyZoZ/MeaCap)       | keyword-to-sentence LM for MeaCap$_{\mathrm{ToT}}|
-| CBART-large             |COCO             | [link](https://huggingface.co/JoeyZoZ/MeaCap)       | keyword-to-sentence LM for MeaCap$_{\mathrm{ToT}}|
-| CBART-large             |Flickr30K        | [link](https://huggingface.co/JoeyZoZ/MeaCap)       | keyword-to-sentence LM for MeaCap$_{\mathrm{ToT}}|
-| ViECAP                  |COCO/Flickr30k   | [link](https://github.com/FeiElysia/ViECap/releases/download/checkpoints/checkpoints.zip)       | baseline of MeaCap$_{\mathrm{InvLM}}|
+| CBART-large             |One-billion-word | [link](https://drive.google.com/file/d/13NOAsdSnO-eLIDxdo0M-_sX2KxyrYndX/view?usp=sharing)       | keyword-to-sentence LM for MeaCap$_{\mathrm{TF}}$ |
+| CBART-large             |CC3M             | [link](https://huggingface.co/JoeyZoZ/MeaCap)       | keyword-to-sentence LM for MeaCap$_{\mathrm{ToT}}$|
+| CBART-large             |SS1M             | [link](https://huggingface.co/JoeyZoZ/MeaCap)       | keyword-to-sentence LM for MeaCap$_{\mathrm{ToT}}$|
+| CBART-large             |COCO             | [link](https://huggingface.co/JoeyZoZ/MeaCap)       | keyword-to-sentence LM for MeaCap$_{\mathrm{ToT}}$|
+| CBART-large             |Flickr30K        | [link](https://huggingface.co/JoeyZoZ/MeaCap)       | keyword-to-sentence LM for MeaCap$_{\mathrm{ToT}}$|
+| ViECAP                  |COCO/Flickr30k   | [link](https://github.com/FeiElysia/ViECap/releases/download/checkpoints/checkpoints.zip)       | baseline of MeaCap$_{\mathrm{InvLM}}$|
 
-If you want to finetune CBART on your own caption corpus, please follow the official training instruction from [CBART](https://github.com/NLPCode/CBART?tab=readme-ov-file).
+If you want to finetune CBART on your own caption corpus, please follow the official training instruction from [CBART](https://github.com/NLPCode/CBART?tab=readme-ov-file). $\beta$
 
 <span id = 'inference'/>
 
