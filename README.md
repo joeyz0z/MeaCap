@@ -134,7 +134,7 @@ Please download these weights and put them into ./checkpoints/ .
 | CBART-large             |Flickr30K        | [link](https://huggingface.co/JoeyZoZ/MeaCap)       | keyword-to-sentence LM for ${MeaCap}_{ToT}$|
 | ViECAP                  |COCO/Flickr30k   | [link](https://github.com/FeiElysia/ViECap/releases/download/checkpoints/checkpoints.zip)       | baseline of ${MeaCap}_{InvLM}$|
 
-If you want to finetune CBART on your own caption corpus, please follow the official training instruction from [CBART](https://github.com/NLPCode/CBART?tab=readme-ov-file), ${MeaCap}_{InvLM}$.
+If you want to finetune CBART on your own caption corpus, please follow the official training instruction from [CBART](https://github.com/NLPCode/CBART?tab=readme-ov-file).
 
 <span id = 'inference'/>
 
