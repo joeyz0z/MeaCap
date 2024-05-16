@@ -143,7 +143,7 @@ If you want to finetune CBART on your own caption corpus, please follow the offi
 
 <span id = 'tf'/>
 
-### Training-free
+### ${MeaCap}_{TF}$: Training-free
 For training-free version ${MeaCap}_{TF}$, we use a pretrained CBART. To bridge the gap between pretrained dataset one-billion-word and caption-style texts, we use a default prompt "The image depicts that". We also support prompt ensembling by setting --prompt_ensembling True.
 ```
 python inference.py --use_prompt True --prompt_ensembling False --memory_id cc3m --img_path ./image_example --lm_model_path ./checkpoints/CBART_one_billion 
