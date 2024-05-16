@@ -38,9 +38,9 @@ official implementation of MeaCap.
     * <a href='#memory'>Memory bank</a>
     * <a href='#model'>Model Zoo</a>
 * <a href='#inference'>Inference</a>
-    * <a href='#tf'>${MeaCap}_{TF}$: Training free</a>
-    * <a href='#tot'>${MeaCap}_{ToT}$: Text-only training</a> 
-    * <a href='#other'>${MeaCap}_{InvLM}$: Memory concepts + ViECAP</a>
+    * <a href='#tf'>Training free</a>
+    * <a href='#tot'>Text-only training</a> 
+    * <a href='#other'>Memory concepts + ViECAP</a>
 * <a href='#experiments'>Experiments</a>
 * <a href='#acknowledgments'>Acknowledgments</a>
 
