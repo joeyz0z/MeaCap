@@ -16,7 +16,7 @@ def get_args():
     parser.add_argument("--gamma", type=float, default=0.2, help="weight for fluency")
 
     parser.add_argument("--use_prompt", type=bool, default=True)
-    parser.add_argument("--prompt", type=list, default=['The image depicts that']
+    parser.add_argument("--prompt", type=list, default=['The image depicts that'])
     parser.add_argument("--prompt_ensembling", type=bool, default=False)
 
     ## MEMORY ##
