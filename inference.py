@@ -157,7 +157,7 @@ if __name__ == "__main__":
             # use fixed concepts
             masked_sentences = ["man"]
 
-
+        all_gen_texts = []
         if args.use_prompt:
             if args.prompt_ensembling == True:
                 prompts = PROMPT_ENSEMBLING
