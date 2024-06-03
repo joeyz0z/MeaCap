@@ -12,6 +12,7 @@ from utils.detect_utils import retrieve_concepts
 from models.clip_utils import CLIP
 import os
 import json
+import copy
 
 @torch.no_grad()
 def main(args) -> None:
