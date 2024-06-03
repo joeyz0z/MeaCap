@@ -127,14 +127,14 @@ Please download these weights and put them into ./checkpoints/ .
 | SceneGraphParser        |✗                | [link](https://huggingface.co/lizhuang144/flan-t5-base-VG-factual-sg)       | Parse caption into scene graph|
 | SentenceBERT            |✗                | [link](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2)       | Sentence similarity computation|
 |(Optional)|$~~~~$ |$~~~~$ |$~~~~$ |
-| CBART-large             |One-billion-word | [link](https://drive.google.com/file/d/13NOAsdSnO-eLIDxdo0M-_sX2KxyrYndX/view?usp=sharing)       | keyword-to-sentence LM for $MeaCap_{TF}$$ |
+| CBART-large             |One-billion-word | [link](https://drive.google.com/file/d/13NOAsdSnO-eLIDxdo0M-_sX2KxyrYndX/view?usp=sharing)       | keyword-to-sentence LM for $MeaCap_{TF}$ |
 | CBART-large             |CC3M             | [link](https://huggingface.co/JoeyZoZ/MeaCap/tree/main/checkpoints)       | keyword-to-sentence LM for $MeaCap_{ToT}$|
 | CBART-large             |SS1M             | [link](https://huggingface.co/JoeyZoZ/MeaCap/tree/main/checkpoints)       | keyword-to-sentence LM for $MeaCap_{ToT}$|
 | CBART-large             |COCO             | [link](https://huggingface.co/JoeyZoZ/MeaCap/tree/main/checkpoints)       | keyword-to-sentence LM for $MeaCap_{ToT}$|
 | CBART-large             |Flickr30K        | [link](https://huggingface.co/JoeyZoZ/MeaCap/tree/main/checkpoints)       | keyword-to-sentence LM for $MeaCap_{ToT}$|
 | ViECAP                  |COCO/Flickr30k   | [link](https://github.com/FeiElysia/ViECap/releases/download/checkpoints/checkpoints.zip)       | baseline of MeaCap$_{InvLM}$|
 
-If you want to finetune CBART on your own caption corpus, please follow the official training instruction from [CBART](https://github.com/NLPCode/CBART?tab=readme-ov-file), $M_I$.
+If you want to finetune CBART on your own caption corpus, please follow the official training instruction from [CBART](https://github.com/NLPCode/CBART?tab=readme-ov-file).
 
 <span id = 'inference'/>
 
@@ -144,7 +144,7 @@ If you want to finetune CBART on your own caption corpus, please follow the offi
 <span id = 'tf'/>
 
 ### Training-free
-For training-free version $MeaCap_{TF}$$, we use a pretrained CBART. To bridge the gap between pretrained dataset one-billion-word and caption-style texts, we use a default prompt "The image depicts that". We also support prompt ensembling by setting --prompt_ensembling True.
+For training-free version $MeaCap_{TF}$, we use a pretrained CBART. To bridge the gap between pretrained dataset one-billion-word and caption-style texts, we use a default prompt "The image depicts that". We also support prompt ensembling by setting --prompt_ensembling True.
 ```
 python inference.py --use_prompt True --prompt_ensembling False --memory_id cc3m --img_path ./image_example --lm_model_path ./checkpoints/CBART_one_billion 
 ```
@@ -160,7 +160,7 @@ python inference.py --use_prompt False --memory_id coco --img_path ./image_examp
 <span id = 'other '/>
 
 ### Memory concepts + ViECAP
-We also supporting add memory concepts to strong baseline [ViECAP](https://github.com/FeiElysia/ViECap) in a plug-and-play way, namely MeaCap$_{\mathrm{InvLM}}$.
+We also supporting add memory concepts to strong baseline [ViECAP](https://github.com/FeiElysia/ViECap) in a plug-and-play way, namely $MeaCap_{InvLM}$.
 We simply need to replace the entity module by our proposed retrieve-then-filter module in the inference stage and then the performance can be improved. Details are shown in Appendix of our paper.
 ```
 python viecap_inference.py --memory_id coco --image_path "*.jpg" --weight_path "checkpoints/train_coco/coco_prefix-0014.pt"
@@ -181,7 +181,7 @@ python viecap_inference.py --memory_id coco --image_path "*.jpg" --weight_path "
 | DeCap       |CC3M    | CC3M   | 42.1   | 34.8 / 37.7 / 49.9 / 39.7      |
 | $MeaCap_{ToT}$|CC3M    | CC3M   | 48.3   | 38.5 / 43.6 / **50.0** / 45.1      |
 | DeCap       |SS1M    | SS1M   | 50.6   | 41.9 / 41.7 / 46.2 / 42.7      |
-| $MeaCap_{TF}$$ |✗       | SS1M   | 51.7   | 42.0 / 42.8 / 45.4 / 43.8     |
+| $MeaCap_{TF}$ |✗       | SS1M   | 51.7   | 42.0 / 42.8 / 45.4 / 43.8     |
 | $MeaCap_{ToT}$|SS1M    | SS1M   | 54.9   | **44.1** / **46.0** /49.7 / **47.3**      |
 </div>
 
@@ -193,7 +193,7 @@ Task              | COCO| Flickr30k | COCO $\Rightarrow$ Flickr30k| Flickr30k $\
 Metric            |CIDEr|CIDEr|CIDEr|CIDEr|
 MAGIC             |49.3 |20.4 |17.5 | 18.3|
 CLIPRe            |53.4 |31.7 |30.1 | 26.5|
-$MeaCap_{TF}$$    |56.9 |36.5 |34.4 | 46.4|
+$MeaCap_{TF}$    |56.9 |36.5 |34.4 | 46.4|
 $MeaCap_{ToT}$    |84.8 |50.2 |40.3 | 51.7|
 $~~~~$|$~~~~$|$~~~~$|$~~~~$|$~~~~$|
 DeCap             |91.2 |56.7 |35.7 | 44.4|
