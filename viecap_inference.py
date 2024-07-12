@@ -12,7 +12,6 @@ from utils.detect_utils import retrieve_concepts
 from models.clip_utils import CLIP
 import os
 import json
-import copy
 
 @torch.no_grad()
 def main(args) -> None:
@@ -119,10 +118,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--device', default = 'cuda:0')
     parser.add_argument('--clip_model', default = 'ViT-B/32')
-    parser.add_argument('--language_model', default = 'F:\ImageText\MeaCap-family\MeaCap-vie\gpt2')
-    parser.add_argument('--vl_model', type=str, default=r'G:/HuggingFace/clip-vit-base-patch32')
-    parser.add_argument("--parser_checkpoint", type=str, default=r'G:/HuggingFace/flan-t5-base-VG-factual-sg')
-    parser.add_argument("--wte_model_path", type=str, default=r'G:/HuggingFace/all-Mini-L6-v2')
+    parser.add_argument('--language_model', default = 'openai-community/gpt2')
+    parser.add_argument('--vl_model', type=str, default=r'openai/clip-vit-base-patch32')
+    parser.add_argument("--parser_checkpoint", type=str, default=r'lizhuang144/flan-t5-base-VG-factual-sg')
+    parser.add_argument("--wte_model_path", type=str, default=r'sentence-transformers/all-MiniLM-L6-v2')
     parser.add_argument('--continuous_prompt_length', type = int, default = 10)
     parser.add_argument('--clip_project_length', type = int, default = 10)
     parser.add_argument('--temperature', type = float, default = 0.01)
