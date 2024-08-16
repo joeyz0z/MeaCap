@@ -144,9 +144,9 @@ If you want to finetune CBART on your own caption corpus, please follow the offi
 <span id = 'tf'/>
 
 ### Training-free
-For training-free version $MeaCap_{TF}$, we use a pretrained CBART. To bridge the gap between pretrained dataset one-billion-word and caption-style texts, we use a default prompt "The image depicts that". We also support prompt ensembling by setting --prompt_ensembling True.
+For training-free version $MeaCap_{TF}$, we use a pretrained CBART. To bridge the gap between pretrained dataset one-billion-word and caption-style texts, we use a default prompt "The image depicts that". We also support prompt ensembling by setting --prompt_ensembling.
 ```
-python inference.py --use_prompt True --prompt_ensembling False --memory_id cc3m --img_path ./image_example --lm_model_path ./checkpoints/CBART_one_billion 
+python inference.py --use_prompt  --memory_id cc3m --img_path ./image_example --lm_model_path ./checkpoints/CBART_one_billion 
 ```
 
 <span id = 'tot'/>
@@ -154,7 +154,7 @@ python inference.py --use_prompt True --prompt_ensembling False --memory_id cc3m
 ### Text-only-training
 For text-only-training version $MeaCap_{ToT}$, we use finetuned CBART where prompts are needless.
 ```
-python inference.py --use_prompt False --memory_id coco --img_path ./image_example --lm_model_path ./checkpoints/CBART_COCO 
+python inference.py --memory_id coco --img_path ./image_example --lm_model_path ./checkpoints/CBART_COCO 
 ```
 
 <span id = 'other '/>

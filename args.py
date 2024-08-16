@@ -15,9 +15,9 @@ def get_args():
     parser.add_argument("--beta", type=float, default=0.8, help="weight for image-matching degree")
     parser.add_argument("--gamma", type=float, default=0.2, help="weight for fluency")
 
-    parser.add_argument("--use_prompt", type=bool, default=True)
+    parser.add_argument("--use_prompt", action='store_true', default=False)
     parser.add_argument("--prompt", type=list, default=['The image depicts that'])
-    parser.add_argument("--prompt_ensembling", type=bool, default=False)
+    parser.add_argument("--prompt_ensembling", action='store_true', default=False)
 
     ## MEMORY ##
     parser.add_argument("--use_memory", type=bool, default=True)
