@@ -1,7 +1,7 @@
 scipy~=1.10.1
 scikit-learn~=1.2.2
 transformers~=4.26.1
-torch~=2.0.0+cu118
+torch==2.0.0+cu118
 dataclasses~=0.6
 filelock~=3.12.3
 numpy~=1.24.1
